@@ -58,7 +58,13 @@ namespace NHMatsumotoDemo.Infrastructure.CrossCutting.IoC
 
             services.AddEndpointsApiExplorer();
             services.AddCors();
-            services.AddControllers();
+
+            services.AddControllers()
+                    .ConfigureApiBehaviorOptions(x =>
+                    {
+                        x.SuppressMapClientErrors = true;
+                    });
+
 
             var key = Encoding.ASCII.GetBytes(configuration.GetValue<string>("JwtPrivateToken"));
 
