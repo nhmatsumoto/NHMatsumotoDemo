@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using NHMatsumotoDemo.Domain.Interfaces;
 using NHMatsumotoDemo.Infrastructure.Database.Context;
 using NHMatsumotoDemo.Infrastructure.Database.Repository;
 using NHMatsumotoDemo.Services;
 using NHMatsumotoDemo.Services.Auth;
 using NHMatsumotoDemo.Services.Translators;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Text;
 
@@ -18,11 +17,8 @@ namespace NHMatsumotoDemo.Infrastructure.CrossCutting.IoC
 {
     public static class BootStrapper
     {
-        private static string connection = "server=localhost;user id=root;password=toor;database=nhmatsumotodemo";
-
         public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
-
             //Services
             services.AddTransient<ITokenService, TokenService>();
          
@@ -43,7 +39,7 @@ namespace NHMatsumotoDemo.Infrastructure.CrossCutting.IoC
             //configuration.GetConnectionString("MariaDbConnectionString")
             services
                 .AddDbContextPool<MariaDbContext>(options => options
-                .UseMySql(connection, ServerVersion.Create(new Version(10, 11, 2), ServerType.MariaDb)));
+                .UseMySql(configuration.GetConnectionString("MariaDbConnectionString"), ServerVersion.Create(new Version(10, 11, 2), ServerType.MariaDb)));
 
             services.AddAuthentication(x =>
             {

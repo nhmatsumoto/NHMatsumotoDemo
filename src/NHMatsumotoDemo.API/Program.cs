@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration; 
 IWebHostEnvironment environment = builder.Environment;
 
+
 ////Custom IoC
 BootStrapper.RegisterServices(builder.Services, configuration);
 
